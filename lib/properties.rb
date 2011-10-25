@@ -1,0 +1,1 @@
+require 'properties/property'
