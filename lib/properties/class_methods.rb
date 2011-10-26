@@ -13,17 +13,26 @@ module Properties
     end
 
     def define_property_methods(name)
-      define_method(name) { instance_variable_get name }
-      define_method("#{name}=") { |val| set_property name }
+
+      define_method(name) do
+        i_var_name = :"@#{name}"
+        if instance_variable_defined? i_var_name
+          instance_variable_get i_var_name
+        else
+          nil # great place to ask for default value
+        end
+      end
+
+      define_method("#{name}=") { |value| set_property name, value }
       define_method("#{name}?") { property_set? name }
     end
 
     def properties
-      @properties ||= []
+      @properties ||= [] # TODO use a Set for faster lookup? is order important?
     end
 
     def required_properties
-      @properties ||= []
+      @required_properties ||= [] # TODO use a Set for faster lookup? is order important?
     end
 
   end

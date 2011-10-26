@@ -22,8 +22,9 @@ module Properties
     self.class.required_properties
   end
 
-  def set_property(name)
-    instance_variable_set name
+  def set_property(name, value)
+    i_var_name = :"@#{name}"
+    instance_variable_set i_var_name, value
     set_properties << name
   end
 
@@ -36,6 +37,11 @@ module Properties
   end
 
   def reset # TODO rename to unset?
+    properties.each do |name|
+      i_var_name = :"@#{name}"
+      instance_variable_set i_var_name, nil # TODO great place to get initial value
+    end
+
     @set_properties = nil
   end
 
