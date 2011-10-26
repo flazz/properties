@@ -2,8 +2,14 @@ require 'properties/class_methods'
 
 module Properties
 
-  def self.included(klass)
-    klass.extend ClassMethods
+  # TODO some code organization
+  # what dimension?
+  # - aggregates vs singles
+  # - normal properties vs required properties
+  # - state vs other stuff
+
+  def self.included(mod)
+    mod.extend ClassMethods
   end
 
   def properties
@@ -28,9 +34,19 @@ module Properties
     set_properties.delete name
   end
 
+  def get_property(name)
+    ivar = :"@#{name}"
+
+    if instance_variable_defined? ivar
+      instance_variable_get ivar
+    else
+      nil # TODO great place to ask for default value
+    end
+  end
+
   def set_property(name, value)
-    i_var_name = :"@#{name}"
-    instance_variable_set i_var_name, value
+    ivar = :"@#{name}"
+    instance_variable_set ivar, value
     set_properties << name
   end
 
