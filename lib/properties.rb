@@ -1,7 +1,4 @@
-require 'properties/property'
-require 'properties/set'
 require 'properties/class_methods'
-require 'properties/instance_methods'
 
 module Properties
 
@@ -9,5 +6,49 @@ module Properties
     klass.extend ClassMethods
   end
 
-  include InstanceMethods
+  def properties
+    @properties ||= initial_properties
+  end
+
+  def initial_properties
+    self.class.properties
+  end
+
+  def required_properties
+    @required_properties ||= initial_required_properties
+  end
+
+  def initial_required_properties
+    self.class.required_properties
+  end
+
+  def set_property(name)
+    instance_variable_set name
+    set_properties << name
+  end
+
+  def property_set?(name)
+    set_properties.include? name
+  end
+
+  def set_properties
+    @set_properties ||= [] # TODO use a Set for faster lookup? is order important?
+  end
+
+  def reset # TODO rename to unset?
+    @set_properties = nil
+  end
+
+  def required_properties_met?
+    not required_properties_not_met.any?
+  end
+
+  def required_properties_not_met
+    required_properties - set_properties
+  end
+
+  def dirty?
+    set_properties.any?
+  end
+
 end
