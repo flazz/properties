@@ -1,23 +1,26 @@
-require 'rubygems'
-require 'ruby-debug'
-
 require 'properties'
-require 'pp'
 
-class Klass
-  extend Properties::ClassMethods
-  include Properties::InstanceMethods
+class Thing
+  include Properties
 
-  property :p
-  property :Fox
+  property :foo
+  required_property :bar
 end
 
-o = Klass.new
+thing = Thing.new
 
-o.p # value of property p
-o.p = :v # assign :v to property p
-o.p? # true if p has been set, otherwise false
-o.dirty? # true if any property has been set
+# methods generated
+thing.foo # value of property foo
+thing.foo= 'value' # assign 'value' to foo
+thing.foo? # if a property has been set
 
-pp o.properties
-o.reset # reset all properties
+# methods available
+thing.properties # symbols of all properties
+
+thing.dirty? # any propery been set?
+thing.dirty_properties # symbols of all properties that have been set
+
+thing.satisfied? # any required property not set?
+thing.unsatisfied_properties # symbols of all required properties that are not set
+
+thing.reset # unset all properties; i.e. dirty? will be false

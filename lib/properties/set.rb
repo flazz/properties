@@ -4,6 +4,7 @@ module Properties
   #
   # this is specialized queries on a hash
   # does not break liskov
+  # probably breaks demeter
   # is a data structure
   #
   # TODO possibly rename this Binding?
@@ -11,10 +12,10 @@ module Properties
   # --franco
   class Set < Hash
 
-    def self.copy set
-      set.inject(new) do |new_set, (name, prop)|
-        new_set[name] = prop.dup
-        new_set
+    def clone
+      inject(self.class.new) do |set, (name, prop)|
+        set[name] = prop.dup
+        set
       end
     end
 
@@ -25,15 +26,19 @@ module Properties
     end
 
     def dirty?
-      dirty.any?
+      dirty_properties.any?
     end
 
-    def dirty
+    def dirty_properties
       values.select &:set?
     end
 
     def satisfied?
-      values.all? &:satisfied?
+      not unsatisfied_properties.any?
+    end
+
+    def unsatisfied_properties
+      values.reject &:satisfied?
     end
 
     def reset

@@ -20,7 +20,7 @@ describe InstanceMethods do
   before { klass.property :some_property }
 
   it 'gets a property' do
-    property.should_receive :get
+    property.should_receive :value
     instance.some_property
   end
 

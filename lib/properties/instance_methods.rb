@@ -9,11 +9,16 @@ module Properties
     end
 
     def initial_properties
-      Set.copy self.class.properties
+      self.class.properties.clone
     end
 
     extend Forwardable
-    def_delegators :properties, :dirty?, :reset, :satisfied?
+    def_delegators :properties,
+      :dirty?,
+      :dirty_properties,
+      :reset,
+      :satisfied?,
+      :unsatisfied_properties
   end
 
 end

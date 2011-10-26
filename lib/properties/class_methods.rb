@@ -13,9 +13,9 @@ module Properties
     end
 
     def define_property_methods name
-      define_method(name) { properties.fetch(name).get }
-      define_method("#{name}?") { properties.fetch(name).set? }
+      define_method(name) { properties.fetch(name).value }
       define_method("#{name}=") { |val| properties.fetch(name).set val }
+      define_method("#{name}?") { properties.fetch(name).set? }
     end
 
     def properties
