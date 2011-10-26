@@ -14,12 +14,18 @@ module Properties
     self.class.properties
   end
 
-  def required_properties
-    @required_properties ||= initial_required_properties
+  def set_properties
+    @set_properties ||= [] # TODO use a Set for faster lookup? is order important?
   end
 
-  def initial_required_properties
-    self.class.required_properties
+  def reset
+    properties.each { |name| reset_property name }
+  end
+
+  def reset_property name
+    i_var_name = :"@#{name}"
+    instance_variable_set i_var_name, nil # TODO great place to get initial value
+    set_properties.delete name
   end
 
   def set_property(name, value)
@@ -32,29 +38,24 @@ module Properties
     set_properties.include? name
   end
 
-  def set_properties
-    @set_properties ||= [] # TODO use a Set for faster lookup? is order important?
-  end
-
-  def reset # TODO rename to unset?
-    properties.each do |name|
-      i_var_name = :"@#{name}"
-      instance_variable_set i_var_name, nil # TODO great place to get initial value
-    end
-
-    @set_properties = nil
-  end
-
-  def required_properties_met?
-    not required_properties_not_met.any?
-  end
-
-  def required_properties_not_met
-    required_properties - set_properties
-  end
-
   def dirty?
     set_properties.any?
+  end
+
+  def required_properties
+    @required_properties ||= initial_required_properties
+  end
+
+  def initial_required_properties
+    self.class.required_properties
+  end
+
+  def requirements_met?
+    not unset_required_properties.any?
+  end
+
+  def unset_required_properties
+    required_properties - set_properties
   end
 
 end

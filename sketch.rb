@@ -22,23 +22,23 @@ thing.properties # symbols of all properties
 thing.dirty? # any propery been set?
 thing.set_properties # symbols of all properties that have been set
 
-thing.required_properties_met? # any required property not set?
-thing.required_properties_not_met # symbols of all required properties that are not set
+thing.requirements_met? # any required property not set?
+thing.unset_required_properties # symbols of all required properties that are not set
 
 p thing.dirty?
-p thing.required_properties_met?
+p thing.requirements_met?
 pp thing
 puts
 
 thing.r = 'a required value'
 
 p thing.dirty?
-p thing.required_properties_met?
+p thing.requirements_met?
 pp thing
 puts
 
 thing.reset # unset all properties; i.e. dirty? will be false
 
 p thing.dirty?
-p thing.required_properties_met?
+p thing.requirements_met?
 pp thing
