@@ -17,7 +17,7 @@ module Properties
   end
 
   def initial_properties
-    self.class.properties
+    self.class.properties.dup
   end
 
   def set_properties
@@ -59,7 +59,7 @@ module Properties
   end
 
   def required_properties
-    @required_properties ||= initial_required_properties
+    @required_properties ||= initial_required_properties.dup
   end
 
   def initial_required_properties
