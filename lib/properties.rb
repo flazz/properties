@@ -29,8 +29,8 @@ module Properties
   end
 
   def reset_property name
-    i_var_name = :"@#{name}"
-    instance_variable_set i_var_name, nil # TODO great place to get initial value
+    ivar = :"@#{name}"
+    instance_variable_set ivar, nil # TODO great place to get initial value
     set_properties.delete name
   end
 
