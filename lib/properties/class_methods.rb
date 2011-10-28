@@ -20,10 +20,12 @@ module Properties
 
     def properties
       @properties ||= [] # TODO use a Set for faster lookup? is order important?
+      # TODO grab the properties from the superclass
     end
 
     def required_properties
       @required_properties ||= [] # TODO use a Set for faster lookup? is order important?
+      # TODO grab the properties from the superclass
     end
 
   end
