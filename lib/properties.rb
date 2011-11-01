@@ -7,7 +7,15 @@ module Properties
   end
 
   def properties
-    self.class.properties
+    @properties ||= class_properties
+  end
+
+  def class_properties
+    names = self.class.properties
+    names.inject({}) do |h, name|
+      h[name] = false
+      h
+    end
   end
 
 end
