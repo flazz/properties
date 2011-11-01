@@ -86,7 +86,7 @@ module Properties
       # true if any property.changed? == true
     end
   end
-  
+
   class Property
     def changed?
       # true if was changed
@@ -100,17 +100,17 @@ end
 module Properties::Tracked
   class Properties
     # list of tracked properties
-    
+
     def changes
       # return arrays of changes index by property names
     end
   end
-  
+
   class Property < Properties::Properties
     def changed?
       # true has previous value
     end
-    
+
     def previous_value
 
     end

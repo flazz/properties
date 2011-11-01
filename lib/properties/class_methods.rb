@@ -4,18 +4,17 @@ module Properties
 
     def property(name)
       properties << name
-      define_property_methods(name)
-    end
 
-    def define_property_methods(name)
-      define_method(name) { get name }
-      define_method("#{name}=") { |value| set name, value }
-      define_method("#{name}?") { set? name }
+      attr_accessor name
+
+      define_method(:"#{name}?") do
+        send(name.to_sym) ? true : false
+      end
+
     end
 
     def properties
-      @properties ||= [] # TODO use a Set for faster lookup? is order important?
-      # TODO grab the properties from the superclass
+      @properties ||= []
     end
 
   end
