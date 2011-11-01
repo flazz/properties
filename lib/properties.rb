@@ -6,4 +6,8 @@ module Properties
     mod.extend ClassMethods
   end
 
+  def properties
+    self.class.properties
+  end
+
 end
