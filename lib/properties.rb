@@ -1,4 +1,5 @@
 require 'properties/class_methods'
+require 'properties/properties'
 
 module Properties
 
@@ -7,15 +8,7 @@ module Properties
   end
 
   def properties
-    @properties ||= class_properties
-  end
-
-  def class_properties
-    names = self.class.properties
-    names.inject({}) do |h, name|
-      h[name] = false
-      h
-    end
+    @properties ||= Properties.build(self.class.properties)
   end
 
 end
