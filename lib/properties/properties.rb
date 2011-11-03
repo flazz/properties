@@ -20,6 +20,10 @@ module Properties
       @data[name]
     end
 
+    def []=(name, value)
+      @data[name] = value
+    end
+
     def changed!(name)
       self[name] = true
     end

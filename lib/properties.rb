@@ -8,7 +8,7 @@ module Properties
   end
 
   def properties
-    @properties ||= Properties.build(self.class.properties)
+    @properties ||= Properties.build(self.class.property_names)
   end
 
 end
