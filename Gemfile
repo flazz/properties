@@ -1,4 +1,9 @@
-# A sample Gemfile
 source "http://rubygems.org"
 
-gem "rspec"
+GIT_HOME = ENV['GIT_HOME'] || "git@repo1.dcx.rackspace.com"
+
+group :development do
+  gem "rspec", ">= 2.5.0"
+end
+
+gemspec
