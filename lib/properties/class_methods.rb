@@ -2,44 +2,49 @@ module Properties
 
   module ClassMethods
 
-    class Definer
-      attr_reader :mod
+    def property(name)
+      property_names << name
+      PropertyDefinition.new(self, name).define
+    end
+
+    def property_names
+      @property_names ||= []
+    end
+    
+    class PropertyDefinition
+      attr_reader :cls
       attr_reader :name
 
-      def initialize(mod, name)
-        @mod = mod
+      def initialize(cls, name)
+        @cls = cls
         @name = name
       end
 
       def define
-        # these are private in ruby, hence the send
-        mod.send :attr_reader, name
-        mod.send :define_method, :"#{name}=", &setter
-        mod.send :define_method, :"#{name}?", &truther
+        define_getter
+        define_setter
+        define_truth
+      end
+      
+      def define_getter
+        cls.send :attr_reader, name
       end
 
-      def truther
-        name = self.name # ruby wont do instance scope in lambdas
-        proc { send(name.to_sym) ? true : false }
-      end
-
-      def setter
-        name = self.name # ruby wont do instance scope in lambdas
-        proc do |value|
+      def define_setter
+        name = self.name
+        cls.send :define_method, :"#{name}=" do |value|
           instance_variable_set :"@#{name}", value
-          properties.set_changed name
+          properties.changed! name
+        end
+      end
+      
+      def define_truth
+        name = self.name
+        cls.send :define_method, :"#{name}?" do
+          send(name.to_sym) ? true : false
         end
       end
 
-    end
-
-    def property(name)
-      properties << name
-      Definer.new(self, name).define
-    end
-
-    def properties
-      @properties ||= []
     end
 
   end

@@ -1,33 +1,35 @@
 module Properties
 
   class Properties
-    attr_reader :data
 
     def self.build(names)
       properties = new
 
-      names.inject(properties.data) do |h, name|
-        h[name] = false
-        h
+      names.each do |name| 
+        properties[name] = false
       end
 
       properties
     end
-
+    
     def initialize
       @data = {}
     end
+    
+    def [](name)
+      @data[name]
+    end
 
-    def set_changed(name)
-      data[name] = true
+    def changed!(name)
+      self[name] = true
     end
 
     def changed?(name)
-      data[name]
+      self[name]
     end
 
     def names
-      data.keys
+      @data.keys
     end
 
   end
