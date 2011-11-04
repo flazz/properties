@@ -5,17 +5,17 @@ module Properties
     def self.build(names)
       properties = new
 
-      names.each do |name| 
+      names.each do |name|
         properties[name] = false
       end
 
       properties
     end
-    
+
     def initialize
       @data = {}
     end
-    
+
     def [](name)
       @data[name]
     end
@@ -24,8 +24,8 @@ module Properties
       @data[name] = value
     end
 
-    def changed!(name)
-      self[name] = true
+    def changed!(name, changed=true)
+      self[name] = changed
     end
 
     def changed?(name)
