@@ -4,44 +4,42 @@ module Properties
 
     def property(name)
       property_names << name
-      PropertyDefinition.new(self, name).define
+      Property.new(name).define(self)
     end
 
     def property_names
       @property_names ||= []
     end
-    
-    class PropertyDefinition
-      attr_reader :cls
+
+    class Property
       attr_reader :name
 
-      def initialize(cls, name)
-        @cls = cls
+      def initialize(name)
         @name = name
       end
 
-      def define
-        define_getter
-        define_setter
-        define_truth
+      def define(cls)
+        define_getter cls
+        define_setter cls
+        define_changed cls
       end
-      
-      def define_getter
+
+      def define_getter(cls)
         cls.send :attr_reader, name
       end
 
-      def define_setter
+      def define_setter(cls)
         name = self.name
         cls.send :define_method, :"#{name}=" do |value|
           instance_variable_set :"@#{name}", value
           properties.changed! name
         end
       end
-      
-      def define_truth
+
+      def define_changed(cls)
         name = self.name
         cls.send :define_method, :"#{name}?" do
-          send(name.to_sym) ? true : false
+          properties.changed? name
         end
       end
 
